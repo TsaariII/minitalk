@@ -6,7 +6,7 @@
 /*   By: nzharkev <nzharkev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 12:35:38 by nzharkev          #+#    #+#             */
-/*   Updated: 2024/10/24 13:55:01 by nzharkev         ###   ########.fr       */
+/*   Updated: 2024/10/24 14:34:25 by nzharkev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,10 @@ static void	bits_and_pieces(int pid, int bit)
 			return ;
 		}
 	}
+	error("THIS IS TOO MUCH> STOP!");
 }
 
-static void ft_send(int pid, char c, int end)
+static void messenger(int pid, char c, int end)
 {
 	int bit;
 
@@ -59,6 +60,12 @@ static void ft_send(int pid, char c, int end)
 		ft_printf("Done\n");
 }
 
+static void	ack_handler(int sig)
+{
+	if (sig == SIGUSR1)
+		g_ack = 1;
+}
+
 int main(int argc, char **argv)
 {
 	struct sigaction	sa;
@@ -66,15 +73,16 @@ int main(int argc, char **argv)
 	char				*msg;
 
 	if (argc != 3 || !argv[2])
-		error("Wrong input");
+		error("Wrong input.");
 	pid = ft_atoi(argv[1]);
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO;
-	//sa.sa_handler = ft_acker;
+	sa.sa_handler = ack_handler;
 	if (sigaction(SIGUSR1, &sa, NULL) == -1)
 		error("Fail");
 	msg = argv[2];
 	while (*msg)
-		ft_send(pid, *msg++, 0);
-	ft_send(pid, '\0', 1);
+		messenger(pid, *msg++, 0);
+	messenger(pid, '\0', 1);
+	return (0);
 }

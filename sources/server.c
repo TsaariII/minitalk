@@ -6,7 +6,7 @@
 /*   By: nzharkev <nzharkev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:02:42 by nzharkev          #+#    #+#             */
-/*   Updated: 2024/10/24 13:55:35 by nzharkev         ###   ########.fr       */
+/*   Updated: 2024/10/25 13:09:13 by nzharkev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,27 @@ void	bin_to_char(int signum, char *c)
 		*c = *c << 1;
 }
 
+void	buffering(int c, int *i, int *size, char **buf)
+{
+	char	*new = NULL;
+
+	if (*i >= *size)
+	{
+		new = ft_realloc(*buf, *size, (*size * 2));
+		if (!new)
+			error("Malloc failed");
+		*buf = new;
+		*size *= 2;
+	}
+	(*buf)[*i] = c;
+	(*i)++;
+}
+
 static void	storage(char c, int pid)
 {
 	 static char	*buf = NULL;
 	 static int		size = 128;
+	 static int		i = 0;
 
 	 if (!buf)
 	 {
@@ -35,23 +52,25 @@ static void	storage(char c, int pid)
 	 }
 	 if (c == '\0')
 	 {
-		ft_printf("\n");
+		buf[i] = '\0';
+		ft_printf("%s\n", buf);
 		free(buf);
 		buf = NULL;
 		size = 128;
+		i = 0;
+		g_pid = 0;
 		kill(pid, SIGUSR1);
 	 }
 	 else
-	 	ft_realloc(buf, size, size);
+	 	buffering(c, &i, &size, &buf);
 }
 
 static void	handler(int signum, siginfo_t *info, void *context)
 {
-	static int	pid;
-	static int	b;
+	static int	pid = 0;
+	static int	b = 7;
 	static char	c;
 
-	b = 7;
 	(void)context;
 	if (g_pid == 0)
 	{
@@ -61,6 +80,7 @@ static void	handler(int signum, siginfo_t *info, void *context)
 	else if (info->si_pid != pid)
 		return ;
 	bin_to_char(signum, &c);
+	b--;
 	if (b < 0)
 	{
 		storage(c, pid);
@@ -77,7 +97,7 @@ int main(void)
 
 	ft_printf("PID: %d\n", getpid());
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART | SA_SIGINFO;
+	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = handler;
 	if (sigaction(SIGUSR1, &sa, NULL) == -1
 		|| sigaction(SIGUSR2, &sa, NULL) == -1)
