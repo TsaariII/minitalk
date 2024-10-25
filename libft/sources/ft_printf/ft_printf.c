@@ -6,12 +6,11 @@
 /*   By: nzharkev <nzharkev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 11:00:50 by nzharkev          #+#    #+#             */
-/*   Updated: 2024/10/24 11:35:32 by nzharkev         ###   ########.fr       */
+/*   Updated: 2024/10/25 14:22:39 by nzharkev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/ft_printf.h"
-
 
 int	ft_printf(char const *str, ...)
 {

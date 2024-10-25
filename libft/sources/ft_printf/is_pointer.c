@@ -6,12 +6,11 @@
 /*   By: nzharkev <nzharkev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:25:54 by nzharkev          #+#    #+#             */
-/*   Updated: 2024/10/24 11:35:32 by nzharkev         ###   ########.fr       */
+/*   Updated: 2024/10/25 14:18:00 by nzharkev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/ft_printf.h"
-
 
 int	is_pointer(void *ptr, int *check)
 {

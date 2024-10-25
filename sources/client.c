@@ -6,13 +6,13 @@
 /*   By: nzharkev <nzharkev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 12:35:38 by nzharkev          #+#    #+#             */
-/*   Updated: 2024/10/24 14:34:25 by nzharkev         ###   ########.fr       */
+/*   Updated: 2024/10/25 14:26:39 by nzharkev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minitalk.h"
 
-volatile sig_atomic_t g_ack;
+volatile sig_atomic_t	g_ack;
 
 int	error(char *error_msg)
 {
@@ -22,7 +22,7 @@ int	error(char *error_msg)
 
 static void	bits_and_pieces(int pid, int bit)
 {
-	int retry;
+	int	retry;
 
 	retry = 0;
 	while (retry <= MAX_RETRY)
@@ -46,9 +46,9 @@ static void	bits_and_pieces(int pid, int bit)
 	error("THIS IS TOO MUCH> STOP!");
 }
 
-static void messenger(int pid, char c, int end)
+static void	messenger(int pid, char c, int end)
 {
-	int bit;
+	int	bit;
 
 	bit = 7;
 	while (bit >= 0)
@@ -66,7 +66,7 @@ static void	ack_handler(int sig)
 		g_ack = 1;
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	struct sigaction	sa;
 	pid_t				pid;

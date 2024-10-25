@@ -6,13 +6,13 @@
 /*   By: nzharkev <nzharkev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:02:42 by nzharkev          #+#    #+#             */
-/*   Updated: 2024/10/25 13:09:13 by nzharkev         ###   ########.fr       */
+/*   Updated: 2024/10/25 14:28:38 by nzharkev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minitalk.h"
 
-volatile sig_atomic_t g_pid = 0;
+volatile sig_atomic_t	g_pid = 0;
 
 void	bin_to_char(int signum, char *c)
 {
@@ -24,8 +24,9 @@ void	bin_to_char(int signum, char *c)
 
 void	buffering(int c, int *i, int *size, char **buf)
 {
-	char	*new = NULL;
+	char	*new;
 
+	new = NULL;
 	if (*i >= *size)
 	{
 		new = ft_realloc(*buf, *size, (*size * 2));
@@ -40,18 +41,18 @@ void	buffering(int c, int *i, int *size, char **buf)
 
 static void	storage(char c, int pid)
 {
-	 static char	*buf = NULL;
-	 static int		size = 128;
-	 static int		i = 0;
+	static char	*buf = NULL;
+	static int	size = 128;
+	static int	i = 0;
 
-	 if (!buf)
-	 {
+	if (!buf)
+	{
 		buf = malloc(size);
 		if (!buf)
 			error("Malloc failed");
-	 }
-	 if (c == '\0')
-	 {
+	}
+	if (c == '\0')
+	{
 		buf[i] = '\0';
 		ft_printf("%s\n", buf);
 		free(buf);
@@ -60,9 +61,9 @@ static void	storage(char c, int pid)
 		i = 0;
 		g_pid = 0;
 		kill(pid, SIGUSR1);
-	 }
-	 else
-	 	buffering(c, &i, &size, &buf);
+	}
+	else
+		buffering(c, &i, &size, &buf);
 }
 
 static void	handler(int signum, siginfo_t *info, void *context)
@@ -91,7 +92,7 @@ static void	handler(int signum, siginfo_t *info, void *context)
 		error("Signal error");
 }
 
-int main(void)
+int	main(void)
 {
 	struct sigaction	sa;
 
