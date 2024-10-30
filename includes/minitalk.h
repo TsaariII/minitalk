@@ -6,7 +6,7 @@
 /*   By: nzharkev <nzharkev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:06:22 by nzharkev          #+#    #+#             */
-/*   Updated: 2024/10/30 15:26:23 by nzharkev         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:04:11 by nzharkev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,5 @@
 
 void	bin_to_char(int signum, char *c);
 int		error_msg(char *msg);
-
 
 #endif

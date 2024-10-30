@@ -6,7 +6,7 @@
 /*   By: nzharkev <nzharkev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 12:35:38 by nzharkev          #+#    #+#             */
-/*   Updated: 2024/10/30 16:01:04 by nzharkev         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:03:42 by nzharkev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@ volatile sig_atomic_t	g_ack;
 
 static void	validation(char *str, pid_t pid)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (pid)
 	{
-	if (pid <= 0)
-		error_msg("Invalid PID");
-	if (kill(pid, 0) == -1)
-		error_msg("Invalid PID");
+		if (pid <= 0)
+			error_msg("Invalid PID");
+		if (kill(pid, 0) == -1)
+			error_msg("Invalid PID");
 	}
 	if (*str)
 	{

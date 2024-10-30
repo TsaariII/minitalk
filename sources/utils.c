@@ -6,7 +6,7 @@
 /*   By: nzharkev <nzharkev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:22:03 by nzharkev          #+#    #+#             */
-/*   Updated: 2024/10/30 15:26:15 by nzharkev         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:03:54 by nzharkev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,4 +17,3 @@ int	error_msg(char *msg)
 	ft_printf("%s\n", msg);
 	exit (1);
 }
-
