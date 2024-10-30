@@ -1,30 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nzharkev <nzharkev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/10 15:06:22 by nzharkev          #+#    #+#             */
-/*   Updated: 2024/10/30 15:26:23 by nzharkev         ###   ########.fr       */
+/*   Created: 2024/10/30 14:22:03 by nzharkev          #+#    #+#             */
+/*   Updated: 2024/10/30 15:26:15 by nzharkev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "../includes/minitalk.h"
 
-//# include </usr/include/signal.h>
-//# include </usr/include/linux/signal.h>
-//# include </usr/include/x86_64-linux-gnu/sys/signal.h>
-//# include </usr/include/x86_64-linux-gnu/asm/signal.h>
-# include <signal.h>
-# include <unistd.h>
-# include "../libft/includes/libft.h"
+int	error_msg(char *msg)
+{
+	ft_printf("%s\n", msg);
+	exit (1);
+}
 
-# define MAX_RETRY 5
-
-void	bin_to_char(int signum, char *c);
-int		error_msg(char *msg);
-
-
-#endif

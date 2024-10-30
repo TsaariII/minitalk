@@ -6,7 +6,7 @@
 /*   By: nzharkev <nzharkev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:02:42 by nzharkev          #+#    #+#             */
-/*   Updated: 2024/10/25 14:28:38 by nzharkev         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:25:48 by nzharkev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	buffering(int c, int *i, int *size, char **buf)
 	{
 		new = ft_realloc(*buf, *size, (*size * 2));
 		if (!new)
-			error("Malloc failed");
+			error_msg("Malloc failed");
 		*buf = new;
 		*size *= 2;
 	}
@@ -49,7 +49,7 @@ static void	storage(char c, int pid)
 	{
 		buf = malloc(size);
 		if (!buf)
-			error("Malloc failed");
+			error_msg("Malloc failed");
 	}
 	if (c == '\0')
 	{
@@ -89,7 +89,7 @@ static void	handler(int signum, siginfo_t *info, void *context)
 		b = 7;
 	}
 	if (kill(pid, SIGUSR1) == -1)
-		error("Signal error");
+		error_msg("Signal error");
 }
 
 int	main(void)
@@ -102,7 +102,7 @@ int	main(void)
 	sa.sa_sigaction = handler;
 	if (sigaction(SIGUSR1, &sa, NULL) == -1
 		|| sigaction(SIGUSR2, &sa, NULL) == -1)
-		error("Signal error");
+		error_msg("Signal error");
 	while (1)
 		pause();
 	return (0);

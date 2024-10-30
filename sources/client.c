@@ -6,7 +6,7 @@
 /*   By: nzharkev <nzharkev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 12:35:38 by nzharkev          #+#    #+#             */
-/*   Updated: 2024/10/25 14:26:39 by nzharkev         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:01:04 by nzharkev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,30 @@
 
 volatile sig_atomic_t	g_ack;
 
-int	error(char *error_msg)
+static void	validation(char *str, pid_t pid)
 {
-	ft_printf("%s\n", error_msg);
-	exit (1);
+	int i;
+
+	i = 0;
+	if (pid)
+	{
+	if (pid <= 0)
+		error_msg("Invalid PID");
+	if (kill(pid, 0) == -1)
+		error_msg("Invalid PID");
+	}
+	if (*str)
+	{
+		while (str[i])
+		{
+			if (ft_isdigit((int)str[i]) == 0)
+			{
+				error_msg("Invalid PID");
+				exit(1);
+			}
+			i++;
+		}
+	}
 }
 
 static void	bits_and_pieces(int pid, int bit)
@@ -43,7 +63,7 @@ static void	bits_and_pieces(int pid, int bit)
 			return ;
 		}
 	}
-	error("THIS IS TOO MUCH> STOP!");
+	error_msg("THIS IS TOO MUCH STOP!");
 }
 
 static void	messenger(int pid, char c, int end)
@@ -56,7 +76,7 @@ static void	messenger(int pid, char c, int end)
 		bits_and_pieces(pid, (c >> bit) & 1);
 		bit--;
 	}
-	if (end && c)
+	if (end && !c)
 		ft_printf("Done\n");
 }
 
@@ -71,15 +91,18 @@ int	main(int argc, char **argv)
 	struct sigaction	sa;
 	pid_t				pid;
 	char				*msg;
+	int					i;
 
+	i = 0;
 	if (argc != 3 || !argv[2])
-		error("Wrong input.");
+		error_msg("Wrong input.");
 	pid = ft_atoi(argv[1]);
+	validation(argv[1], pid);
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_handler = ack_handler;
 	if (sigaction(SIGUSR1, &sa, NULL) == -1)
-		error("Fail");
+		error_msg("Fail");
 	msg = argv[2];
 	while (*msg)
 		messenger(pid, *msg++, 0);
