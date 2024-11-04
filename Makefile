@@ -62,6 +62,7 @@ clean:
 fclean:
 		@rm -f $(NAME_C) $(NAME_S)
 		@rm -f $(OBJS_C) $(OBJS_S)
+		@rm -rf $(OBJ_DIR)
 		@make -C $(LIBFT_DIR) fclean
 		@echo "\n\033[0;31mAll is gone\033[0m\n"
 

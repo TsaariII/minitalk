@@ -6,13 +6,19 @@
 /*   By: nzharkev <nzharkev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:02:42 by nzharkev          #+#    #+#             */
-/*   Updated: 2024/10/30 15:25:48 by nzharkev         ###   ########.fr       */
+/*   Updated: 2024/11/04 08:07:47 by nzharkev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minitalk.h"
 
 volatile sig_atomic_t	g_pid = 0;
+
+/*
+ * Builds a character bit by bit based on the received signal.
+ * Shifts the bits of the character left and sets the least significant bit
+ * to 1 if SIGUSR1 is received, or 0 if SIGUSR2 is received.
+ */
 
 void	bin_to_char(int signum, char *c)
 {
@@ -21,6 +27,11 @@ void	bin_to_char(int signum, char *c)
 	else if (signum == SIGUSR2)
 		*c = *c << 1;
 }
+/*
+ * Stores a character in a dynamically resizing buffer.
+ * Expands the buffer size if necessary, then stores the character at the
+ * current index and increments the index.
+ */
 
 void	buffering(int c, int *i, int *size, char **buf)
 {
@@ -38,6 +49,12 @@ void	buffering(int c, int *i, int *size, char **buf)
 	(*buf)[*i] = c;
 	(*i)++;
 }
+/*
+ * Handles complete characters and stores them in a buffer.
+ * If the character is the null terminator, it indicates the end of a message,
+ * prints the message, resets the buffer, and sends an acknowledgment signal
+ * to the client. Otherwise, it stores the character in the buffer.
+ */
 
 static void	storage(char c, int pid)
 {
@@ -66,6 +83,13 @@ static void	storage(char c, int pid)
 		buffering(c, &i, &size, &buf);
 }
 
+/*
+ * Signal handler that processes each incoming signal bit by bit.
+ * Determines the client's PID, accumulates bits to form characters, and calls
+ * storage to store the characters.
+ * Sends acknowledgment to the client after each bit.
+ */
+
 static void	handler(int signum, siginfo_t *info, void *context)
 {
 	static int	pid = 0;
@@ -91,6 +115,11 @@ static void	handler(int signum, siginfo_t *info, void *context)
 	if (kill(pid, SIGUSR1) == -1)
 		error_msg("Signal error");
 }
+
+/*
+ * Initializes the server program, sets up the signal handler, and
+ * enters an infinite loop waiting for signals. Prints the server PID on startup.
+ */
 
 int	main(void)
 {
